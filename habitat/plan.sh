@@ -14,23 +14,16 @@ pkg_build_deps=(
   core/rust
   core/gcc
   core/pkg-config
-  core/openssl
   core/make
 )
 
 do_build() {
-  echo "Building"
   pushd "${PLAN_CONTEXT}/.."
-    cargo build --release --verbose
+    cp -r src ${CACHE_PATH}/.
+    cp Cargo.toml ${CACHE_PATH}/.
   popd
 }
 
 do_install() {
-  echo "cache path: ${CACHE_PATH}"
-  echo "pkg_prefix: ${pkg_prefix}"
-  pushd "${PLAN_CONTEXT}/.."
-    cp -r src ${CACHE_PATH}/.
-    cp Cargo.toml ${CACHE_PATH}/.
-    cargo install --root "${pkg_prefix}" --path "${CACHE_PATH}" --verbose
-  popd
+  cargo install --root "${pkg_prefix}" --path "${CACHE_PATH}" --verbose
 }
