@@ -1,5 +1,5 @@
-hab pkg install chef/ci-studio-common >/dev/null
-source "$(hab pkg path chef/ci-studio-common)/bin/studio-common"
+hab pkg install chef/studio-common >/dev/null
+source "$(hab pkg path chef/studio-common)/bin/studio-common"
 
 # This removes the visual mode when select text with the mouse in vim.
 echo "set mouse-=a" >> ~/.vimrc
@@ -14,7 +14,7 @@ function htop() {
 }
 
 function load_dev_config() {
-  export HAB_CONFIG_BASELINE="
+  export HAB_RUST_TEST="
 
 "
 }
