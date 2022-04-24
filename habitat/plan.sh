@@ -8,6 +8,7 @@ pkg_bin_dirs=(bin)
 pkg_deps=(
   core/glibc
   core/gcc-libs
+  core/mysql-client
 )
 
 pkg_build_deps=(
@@ -15,6 +16,11 @@ pkg_build_deps=(
   core/gcc
   core/pkg-config
   core/make
+  core/openssl
+)
+
+pkg_binds=(
+  [database]="port username password local_only"
 )
 
 do_build() {
