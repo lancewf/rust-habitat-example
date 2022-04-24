@@ -13,7 +13,7 @@ fn index(_req: HttpRequest) -> HttpResponse  {
 fn main() {
     let pool = mysql::Pool::new("mysql://bob:password123@127.0.0.1:3306/rust").unwrap();
 
-    pool.prep_exec(r"CREATE TABLE payment (
+    pool.prep_exec(r"CREATE TABLE if not exists payment (
         customer_id int not null,
         amount int not null,
         account_name text
