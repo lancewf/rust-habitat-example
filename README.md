@@ -5,7 +5,7 @@ To build and run the code
 1. Enter the studio with `hab studio enter`
 1. Build and install the service with `start`
 1. Watch the logs with `sl`
-1. Curl the server with `curl localhost:8088`
+1. Curl the server with `curl localhost:8088/9098/cart/index.html`
 1. To check the database run `sql_cli`
 1. Run `use rust`
 2. Then `show tables`
