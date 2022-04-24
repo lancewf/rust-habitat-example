@@ -10,3 +10,7 @@ edition = "2018"
 actix = "0.8"
 actix-web = "1.0.0-beta"
 mysql = "16.1.0"
+config = "0.13.1"
+toml = { version = "0.5", optional = true }
+serde = "1.0"
+serde_derive = "1.0"

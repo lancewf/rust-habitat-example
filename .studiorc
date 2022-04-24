@@ -21,6 +21,9 @@ function start_binds() {
 
 function create_config() {
   create_config_folders
+  write_config_file "database_name = $DB_NAME\n"
+  append_config_file "port = $PORT\n"
+  append_config_file "bind = '127.0.0.1'\n"
 }
 
 function get_binds() {
@@ -46,6 +49,12 @@ function start_mysql() {
   hab svc load lancewf/$service
 
   wait_or_fail_for_port_to_listen $MYSQL_PORT
+}
+
+function reload() {
+  hab svc unload $HAB_ORIGIN/$SERVICE_NAME
+  sleep 3
+  hab svc load $HAB_ORIGIN/$SERVICE_NAME $(get_binds)
 }
 
 function load_mysql() 
