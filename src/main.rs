@@ -2,13 +2,14 @@ extern crate actix_web;
 extern crate mysql;
 #[macro_use]
 extern crate serde_derive;
-use actix_web::{HttpServer, App, web, HttpRequest, HttpResponse};
+use actix_web::{get, web, App, HttpServer, Responder};
 use config::Config;
 
 #[derive(Debug, Deserialize)]
 struct Settings {
   port: i16,
   bind: String,
+  message: String,
   database: Database,
 }
 
@@ -21,11 +22,10 @@ struct Database {
     name: String,
 }
 
-// Here is the handler, 
-// we are returning a json response with an ok status 
-// that contains the text Hello World
-fn index(_req: HttpRequest) -> HttpResponse  {
-    HttpResponse::Ok().json("Hello world!")
+#[get("/{id}/{name}/index.html")]
+async fn index(path: web::Path<(u32, String)>) -> impl Responder {
+    let (id, name) = path.into_inner();
+    format!("Hello {}! id:{}", name, id)
 }
 
 fn main() {
@@ -52,16 +52,14 @@ fn main() {
     let connection_string = format!("{}:{}", config.bind, config.port);
     println!("connection_string: {}", connection_string);
 
-    // We are creating an Application instance and 
-    // register the request handler with a route and a resource 
-    // that creates a specific path, then the application instance 
-    // can be used with HttpServer to listen for incoming connections.
-    match HttpServer::new(|| App::new().service(
-             web::resource("/").route(web::get().to_async(index))))
-        .bind(connection_string)
-        .unwrap()
-        .run() {
-            Ok(()) => println!("called !"),
-            Err(e) => println!(" error {}", e),
-        };
+    start_server(connection_string);
 }
+
+#[actix_web::main]
+async fn start_server(connection_string: String) -> std::io::Result<()> {
+    HttpServer::new(|| App::new().service(index))
+        .bind(connection_string)?
+        .run()
+        .await
+}
+
