@@ -1,6 +1,5 @@
 port={{cfg.port}}
 bind="{{cfg.bind}}"
-message="{{cfg.message}}"
 
 [database]
 user = "{{bind.database.first.cfg.username}}"

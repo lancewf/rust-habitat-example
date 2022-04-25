@@ -21,7 +21,7 @@ function start_binds() {
 
 function create_config() {
   create_config_folders
-  write_config_file "database_name = $DB_NAME\n"
+  write_config_file "database_name = '$DB_NAME'\n"
   append_config_file "port = $PORT\n"
   append_config_file "bind = '127.0.0.1'\n"
 }

@@ -2,8 +2,7 @@
 # See the docs at https://www.habitat.sh/docs/create-packages-configure/.
 # You can safely delete this file if you don't need it.
 
-database_name = "rust"
+database_name="rust"
 
 port=8088
 bind="127.0.0.1"
-message="Hello rust!"

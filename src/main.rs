@@ -1,4 +1,5 @@
 extern crate actix_web;
+#[macro_use]
 extern crate mysql;
 #[macro_use]
 extern crate serde_derive;
@@ -9,7 +10,6 @@ use config::Config;
 struct Settings {
   port: i16,
   bind: String,
-  message: String,
   database: Database,
 }
 
@@ -22,10 +22,18 @@ struct Database {
     name: String,
 }
 
-#[get("/{id}/{name}/index.html")]
-async fn index(path: web::Path<(u32, String)>) -> impl Responder {
-    let (id, name) = path.into_inner();
-    format!("Hello {}! id:{}", name, id)
+#[get("/{customer_id}/{account_name}/index.html")]
+async fn index(path: web::Path<(u32, String)>, db_pool: web::Data<mysql::Pool>) -> impl Responder {
+    let (customer_id, account_name) = path.into_inner();
+
+    db_pool.prep_exec("INSERT INTO payment (customer_id, account_name) VALUES (:customer_id, :account_name)", 
+        mysql::params! {
+                "customer_id" => customer_id,
+                "account_name" => account_name.clone(),
+        },
+    ).unwrap();
+
+    format!("Hello {}! id:{}", account_name, customer_id)
 }
 
 fn main() {
@@ -45,19 +53,22 @@ fn main() {
 
     pool.prep_exec(r"CREATE TABLE if not exists payment (
         customer_id int not null,
-        amount int not null,
         account_name text
     )", ()).unwrap();
 
-    let connection_string = format!("{}:{}", config.bind, config.port);
-    println!("connection_string: {}", connection_string);
-
-    start_server(connection_string);
+    start_server(config, pool).unwrap();
 }
 
 #[actix_web::main]
-async fn start_server(connection_string: String) -> std::io::Result<()> {
-    HttpServer::new(|| App::new().service(index))
+async fn start_server(config: Settings, pool: mysql::Pool) -> std::io::Result<()> {
+    let connection_string = format!("{}:{}", config.bind, config.port);
+    println!("connection_string: {}", connection_string);
+
+    HttpServer::new(move || 
+            App::new()
+                .app_data(web::Data::new(pool.clone()))
+                .service(index)
+        )
         .bind(connection_string)?
         .run()
         .await
