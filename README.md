@@ -9,3 +9,4 @@ To build and run the code
 1. To check the database run `sql_cli`
 1. Run `use rust`
 2. Then `show tables`
+3. Then `Select * from payments;`
