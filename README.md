@@ -1,4 +1,4 @@
-This is a sample Habitat Rust package. This is a webserver that listens on port localhost:8088. 
+This is a sample Habitat Rust package. This is a webserver with database that listens on port localhost:8088. 
 This should be used to get up and running with Rust in a Habitat package.
 
 To build and run the code
