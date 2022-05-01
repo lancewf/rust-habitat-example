@@ -4,4 +4,4 @@ exec 2>&1
 
 cd {{pkg.svc_path}}
 
-exec hello-rust
+exec {{pkg.name}}

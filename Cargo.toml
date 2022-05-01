@@ -1,5 +1,5 @@
 [package]
-name = "hello-rust"
+name = "pkg_name"
 version = "0.1.1"
 authors = ["Lance Finfrock <lancewf@gmail.com>"]
 edition = "2018"

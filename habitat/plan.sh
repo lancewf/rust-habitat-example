@@ -27,6 +27,9 @@ do_build() {
   pushd "${PLAN_CONTEXT}/.."
     cp -r src ${CACHE_PATH}/.
     cp Cargo.toml ${CACHE_PATH}/.
+    sed -i "s/pkg_name/$pkg_name/g" ${CACHE_PATH}/Cargo.toml
+    # sed -i "s/{{pkg_version}}/$pkg_version/g" ${CACHE_PATH}/Cargo.toml
+    # sed -i "s/{{pkg_maintainer}}/$pkg_maintainer/g" ${CACHE_PATH}/Cargo.toml
   popd
 }
 
